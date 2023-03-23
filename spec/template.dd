@@ -90,9 +90,13 @@ $(GNAME TemplateArguments):
     $(D !) $(GLINK TemplateSingleArgument)
 
 $(GNAME TemplateArgumentList):
+    $(GLINK TemplateNamedArgument)
+    $(GLINK TemplateNamedArgument) $(D ,)
+    $(GLINK TemplateNamedArgument) $(D ,) $(GSELF TemplateArgumentList)
+
+$(GNAME TemplateNamedArgument):
+    $(GLINK_LEX Identifier) : $(GLINK TemplateArgument)
     $(GLINK TemplateArgument)
-    $(GLINK TemplateArgument) $(D ,)
-    $(GLINK TemplateArgument) $(D ,) $(GSELF TemplateArgumentList)
 
 $(GNAME TemplateArgument):
     $(GLINK2 type, Type)
@@ -133,7 +137,7 @@ $(GNAME TemplateSingleArgument):
         TFoo!(int).Ptr x; // declare x to be of type int*
         ------
 
-    $(P If the $(GLINK TemplateArgument) is one token long, the parentheses can be omitted:)
+    $(P If the $(GLINK TemplateNamedArgument) is one token long, the parentheses can be omitted:)
 
         ---
         TFoo!int.Ptr x;   // same as TFoo!(int).Ptr x;
