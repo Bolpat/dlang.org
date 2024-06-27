@@ -655,10 +655,11 @@ $(CONSOLE
 $(H3 $(LNAME2 foreach_over_associative_arrays, Foreach over Associative Arrays))
 
         $(P If the aggregate expression is an associative array, there
-        can be one or two variables declared. If one, then the variable
-        is said to be the $(I value) set to the elements of the array,
-        one by one. If the type of the
-        variable is provided, it must implicitly convert from the array element type.)
+        can be one or two variables declared. If one, the variable
+        takes on the values of the key–value pairs in the associative array.
+        If the type of the variable is provided, it must implicitly convert from the array element type,
+        and if the iteration is by reference using `ref`,
+        the type must match exactly, possibly with the exception of type qualifiers.)
 
 $(SPEC_RUNNABLE_EXAMPLE_RUN
 --------------
@@ -674,11 +675,14 @@ assert(userAges == ["john":31, "sue":33]);
 )
 
         $(P If there are
-        two variables declared, the first is said to be the $(I index)
-        and the second is said to be the $(I value). The $(I index)
-        must be compatible with the indexing type of the associative
-        array. It cannot be `ref`,
-        and it is set to be the index of the array element.)
+        two variables declared, the first takes on the keys
+        and the second the values of key–value pairs in the associative array.
+        As with values, if a type is provided, it must be compatible,
+        but unlike values, keys cannot be modified when taken by reference.
+        If keys are taken by reference, their type is `const` or `immutable` qualified.)
+
+        $(BEST_PRACTICE To avoid unnecessary copies and support types that cannot be copied,
+        iterate keys and values of associative arrays by reference.)
 
 $(SPEC_RUNNABLE_EXAMPLE_RUN
 --------------
@@ -692,9 +696,9 @@ foreach (string s, double d; aa)
 --------------
 )
 
-        $(P The order in which the elements of the
-        array are iterated over is unspecified for $(D foreach).
-        This is why $(D foreach_reverse) for associative arrays is illegal.)
+        $(P The order in which the elements of the associative
+        array are iterated over is unspecified.
+        Therefore, $(D foreach_reverse) for associative arrays would be nonsensical and is therefore illegal.)
 
 $(H3 $(LNAME2 foreach_over_struct_and_classes, Foreach over Structs and Classes with `opApply`))
 
